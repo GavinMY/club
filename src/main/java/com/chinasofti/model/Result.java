@@ -1,8 +1,6 @@
 package com.chinasofti.model;
 
-
 public class Result {
-	
 	private int code;
 	private String msg;
 	private Object data;
@@ -27,7 +25,7 @@ public class Result {
 	public Result(int code, String msg, Object data) {
 		super();
 		this.code = code;
-		this.msg = "default";
+		this.msg =msg;
 		this.data = data;
 	}
 	public Result(int code, String msg) {

@@ -17,6 +17,10 @@ public interface IUserService {
 	/*
 	 * 用户登录接口
 	 */
-	public Object userLogin(String userName,String password,String email)throws Exception;
-
+	public User userLogin(String userName,String password);
+	//注册审批
+	public Boolean approve(int status,int userId);
+   //检查用户名是否已经存在
+	public Boolean checkUserName(String userName);
+	
 }

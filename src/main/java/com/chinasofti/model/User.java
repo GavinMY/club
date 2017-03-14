@@ -2,6 +2,7 @@ package com.chinasofti.model;
 // default package
 
 import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,14 +26,15 @@ public class User  implements java.io.Serializable {
      private Integer userId;
      private String userName;
      private String password;
+     private String employid;
+     private String department;
      private Timestamp createTime;
      private Integer state;
      private String position;
-     private String email;
-     private Timestamp loginTime;
+     private String approveuserid;
+     private Timestamp approvetime;
      private String userType;
-     private String role;
-
+     private String chineseName;
 
     // Constructors
 
@@ -41,18 +43,7 @@ public class User  implements java.io.Serializable {
     }
 
     
-    /** full constructor */
-    public User(String userName, String password, Timestamp createTime, Integer state, String position, String email, Timestamp loginTime, String userType, String role) {
-        this.userName = userName;
-        this.password = password;
-        this.createTime = createTime;
-        this.state = state;
-        this.position = position;
-        this.email = email;
-        this.loginTime = loginTime;
-        this.userType = userType;
-        this.role = role;
-    }
+
 
    
     // Property accessors
@@ -118,26 +109,6 @@ public class User  implements java.io.Serializable {
         this.position = position;
     }
     
-    @Column(name="email")
-
-    public String getEmail() {
-        return this.email;
-    }
-    
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    
-    @Column(name="login_time", length=19)
-
-    public Timestamp getLoginTime() {
-        return this.loginTime;
-    }
-    
-    public void setLoginTime(Timestamp loginTime) {
-        this.loginTime = loginTime;
-    }
-    
     @Column(name="user_type", length=40)
 
     public String getUserType() {
@@ -147,23 +118,40 @@ public class User  implements java.io.Serializable {
     public void setUserType(String userType) {
         this.userType = userType;
     }
-    
-    @Column(name="role", length=200)
+    @Column(name="approveuserid")
+	public String getApproveuserid() {
+		return approveuserid;
+	}
+	public void setApproveuserid(String approveuserid) {
+		this.approveuserid = approveuserid;
+	}
+	@Column(name="approvetime")
+	public Timestamp getApprovetime() {
+		return approvetime;
+	}
+	public void setApprovetime(Timestamp approvetime) {
+		this.approvetime = approvetime;
+	}
+	@Column(name="employid")
+	public String getEmployid() {
+		return employid;
+	}
+	public void setEmployid(String employid) {
+		this.employid = employid;
+	}
+	@Column(name="department")
+	public String getDepartment() {
+		return department;
+	}
 
-    public String getRole() {
-        return this.role;
-    }
-    
-    public void setRole(String role) {
-        this.role = role;
-    }
-   
-
-
-
-
-
-
-
-
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+	@Column(name="chineseName")
+	public String getChineseName() {
+		return chineseName;
+	}
+	public void setChineseName(String chineseName) {
+		this.chineseName = chineseName;
+	}
 }
