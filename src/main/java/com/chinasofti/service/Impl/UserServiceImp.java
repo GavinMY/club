@@ -6,6 +6,7 @@ package com.chinasofti.service.Impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -73,7 +74,7 @@ public class UserServiceImp implements IUserService {
 		User user = null;
 		RowMapper<User> rowMapper=ParameterizedBeanPropertyRowMapper.newInstance(User.class);
 		sql = "select*from user where user_name=? and password=?";
-	List<User> list=this.jdbcTemplate.query(sql, new Object[] { userName, password }, rowMapper);
+	List<User> list=this.jdbcTemplate.query(sql, new Object[] {userName, password }, rowMapper);
 	if(list.size()>0)
 	{
 		user=list.get(0);
@@ -82,10 +83,12 @@ public class UserServiceImp implements IUserService {
 	}
 
 	@Override
-	public Boolean approve(int status, int userId) {
+	public Boolean approve(int status, int userId,int approveUserid) {
 		Boolean result = false;
-		String sql = "update user set state =? where user_id=?";
-		int flg = this.jdbcTemplate.update(sql, new Object[] { status, userId });
+		Timestamp timestamp=new Timestamp(System.currentTimeMillis());
+		logger.debug("timestamp"+timestamp);
+		String sql = "update user set state ="+status+" and  approveuserid='"+approveUserid+"' where user_id="+userId;		
+		int flg = this.jdbcTemplate.update(sql);
 		if (flg > 0) {
 			result = true;
 		}

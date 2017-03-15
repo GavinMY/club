@@ -47,7 +47,7 @@ public class UserController {
 
 	@ResponseBody
 	@RequestMapping("regist")
-	public Object regist(@ModelAttribute User user) throws Exception {
+	public Object regist(@ModelAttribute("user") User user) throws Exception {
 		Result result = null;
 		if (null == user && null == user.getUserName()) {//用户名不能为空
 			result = new Result(-1, velocityConf.getProperty("user.emptyname"), null);
@@ -67,9 +67,9 @@ public class UserController {
 	/* 审批用户 */
 	@ResponseBody
 	@RequestMapping("approve")
-	public Object approve(int status, int userId) {
+	public Object approve(int userId,int approveUserid) {
 		Result result = null;
-		Boolean flg = UserServiceImp.approve(status, userId);
+		Boolean flg = UserServiceImp.approve(1, userId,approveUserid);
 		if (flg) {
 			result = new Result(1,  velocityConf.getProperty("golbal.success"), null);
 		} else {

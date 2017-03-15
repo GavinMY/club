@@ -34,6 +34,35 @@
     <filter-name>encodingFilter</filter-name>
     <url-pattern>*.jsp</url-pattern>
   </filter-mapping>
+  <!-- 跨域访问配置 start -->
+	<filter>  
+        <filter-name>CORS</filter-name>  
+        <filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>  
+        <init-param>  
+         <param-name>cors.allowOrigin</param-name>  
+            <param-value>*</param-value>  
+        </init-param>  
+        <init-param>  
+         <param-name>cors.supportedMethods</param-name>  
+            <param-value>GET,POST,HEAD,OPTIONS,PUT</param-value>  
+        </init-param>  
+        <init-param>  
+         <param-name>cors.supportedHeaders</param-name>  
+            <param-value>Accept, Origin, X-Requested-With, Content-Type, Last-Modified,Access-Control-Request-Method,Access-Control-Request-Headers,BasicAuthUsername</param-value>  
+        </init-param>  
+        <init-param>  
+            <param-name>cors.exposedHeaders</param-name>  
+            <param-value>Set-Cookie</param-value>  
+        </init-param>  
+        <init-param>  
+            <param-name>cors.supportsCredentials</param-name>  
+            <param-value>true</param-value>  
+        </init-param>  
+    </filter>  
+    <filter-mapping>  
+        <filter-name>CORS</filter-name>  
+        <url-pattern>/*</url-pattern>  
+    </filter-mapping>
   
         <!-- Spring的log4j监听器 -->  
     <listener>  
@@ -64,6 +93,7 @@
         <param-name>webAppRootKey</param-name>
         <param-value>webapp.root2</param-value>
     </context-param>
+    
   	   <welcome-file-list>  
         <welcome-file>index.jsp</welcome-file>  
     </welcome-file-list>  

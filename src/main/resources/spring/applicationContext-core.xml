@@ -26,7 +26,5 @@
 
     <!--需要扫描的包  -->
     <context:component-scan base-package="com.chinasofti.*" />
-    <util:properties  id="velocityConf" location="classpath:message.properties"></util:properties> 
-    
-   
+    <util:properties  id="velocityConf" location="classpath:message.properties"></util:properties>  
 </beans>

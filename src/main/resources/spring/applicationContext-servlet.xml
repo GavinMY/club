@@ -37,5 +37,5 @@
     <context:component-scan base-package="com" />
     <context:annotation-config />
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"></bean> 
-    <mvc:default-servlet-handler/>
+    <mvc:default-servlet-handler/>   
 </beans>
