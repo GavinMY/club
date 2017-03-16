@@ -49,7 +49,7 @@ public class UserController {
 	@RequestMapping("regist")
 	public Object regist(@ModelAttribute("user") User user) throws Exception {
 		Result result = null;
-		if (null == user && null == user.getUserName()) {//用户名不能为空
+		if (null == user && null == user.getUserName()) {
 			result = new Result(-1, velocityConf.getProperty("user.emptyname"), null);
 		} else {
 			Boolean flg = UserServiceImp.checkUserName(user.getUserName());
@@ -89,6 +89,20 @@ public class UserController {
 			result = new Result(1, "can regist", null);
 		} else {
 			result = new Result(-1, velocityConf.getProperty("user.inused"), null);
+		}
+		return result;
+	}
+	@ResponseBody
+	@RequestMapping("signin")
+	public Object signin(int userId,int activityId,String signAddress) {
+		Map<String, Object> data = new HashMap<String, Object>();
+		Result result = null;
+		Boolean flg = (Boolean) UserServiceImp.signin(userId, activityId, signAddress);
+		if (flg) {
+
+			result = new Result(1, "sign in successful", null);
+		} else {
+			result = new Result(-1,"sign in failed", null);
 		}
 		return result;
 	}

@@ -34,7 +34,7 @@
         <property name="suffix" value=".jsp" />
     </bean>
 
-    <context:component-scan base-package="com" />
+    <context:component-scan base-package="com.chinasofti" />
     <context:annotation-config />
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"></bean> 
     <mvc:default-servlet-handler/>   

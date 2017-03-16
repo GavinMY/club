@@ -20,7 +20,6 @@ public interface IUserService {
 	public User userLogin(String userName,String password);
 	//注册审批
 	public Boolean approve(int status,int userId,int approveUserid);
-   //检查用户名是否已经存在
 	public Boolean checkUserName(String userName);
-	
+	public Object signin(int userId,int activityId,String signAddress); 
 }

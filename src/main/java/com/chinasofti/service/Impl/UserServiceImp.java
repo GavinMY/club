@@ -37,12 +37,12 @@ public class UserServiceImp implements IUserService {
 	 * 
 	 * @see com.chinasofti.service.User.IUserService#userRegist()
 	 */
-	public Object userRegist(User user) {
-		String sql = "insert into user(user_name,password,employid,department,user_type,chineseName) values(?,?,?,?,?,?)";
+	public Object userRegist(final User user) {
+		final String registsql = "insert into user(user_name,password,employid,department,user_type,chineseName) values(?,?,?,?,?,?)";
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		int result = jdbcTemplate.update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-				PreparedStatement ps = jdbcTemplate.getDataSource().getConnection().prepareStatement(sql,
+				PreparedStatement ps = jdbcTemplate.getDataSource().getConnection().prepareStatement(registsql,
 						new String[] { "user_name", "password", "employid", "department", "user_type","chineseName"});
 				ps.setString(1, user.getUserName());
 				ps.setString(2, user.getPassword());
@@ -104,5 +104,18 @@ public class UserServiceImp implements IUserService {
 			result = true;
 		}
 		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.chinasofti.service.IUserService#signin(int)
+	 */
+	@Override
+	public Object signin(int userId,int activityId,String signAddress) {
+	 String signinsql = "insert into sign(userid,activeid,signaddress) values(?,?,?)";
+
+		int result = jdbcTemplate.update(signinsql, 
+				new Object[]{userId,activityId,signAddress}); 
+		
+		return result>0;
 	}
 }
