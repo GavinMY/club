@@ -83,12 +83,11 @@ public class UserServiceImp implements IUserService {
 	}
 
 	@Override
-	public Boolean approve(int status, int userId,int approveUserid) {
+	public Boolean approve(Integer status, Integer userId,Integer approveUserid) {
 		Boolean result = false;
 		Timestamp timestamp=new Timestamp(System.currentTimeMillis());
-		logger.debug("timestamp"+timestamp);
-		String sql = "update user set state ="+status+" and  approveuserid='"+approveUserid+"' where user_id="+userId;		
-		int flg = this.jdbcTemplate.update(sql);
+		int flg = jdbcTemplate.update("update user set state=?, approveuserid=? , approvetime=?  where user_id=?",
+				  new Object[]{status,approveUserid,timestamp,userId});
 		if (flg > 0) {
 			result = true;
 		}
@@ -106,9 +105,6 @@ public class UserServiceImp implements IUserService {
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.chinasofti.service.IUserService#signin(int)
-	 */
 	@Override
 	public Object signin(int userId,int activityId,String signAddress) {
 	 String signinsql = "insert into sign(userid,activeid,signaddress) values(?,?,?)";
@@ -117,5 +113,16 @@ public class UserServiceImp implements IUserService {
 				new Object[]{userId,activityId,signAddress}); 
 		
 		return result>0;
+}
+
+	@Override
+	public Boolean joinActive(int userId, int activeId) {
+		Boolean result = false;
+		int flg = jdbcTemplate.update("insert into joinuser(userid,activeid) values(?,?)",
+				  new Object[]{userId,activeId});
+		if (flg > 0) {
+			result = true;
+		}
+		return result;
 	}
 }

@@ -38,18 +38,22 @@ public class ActiveServiceImpl implements ActiveService {
 		if(list.size()>0)
 		{
 			activity=list.get(0);
-//			Map activityMap=(Map) list.get(0);
-//			activity=new Activity();
-//			activity.setAddress(address);
-//			activity.setContent(content);
-//			activity.setCreateTime(createTime);
-			
-//			System.out.println(activityMap.get("remark"));
-//			System.out.println(activityMap.get("content"));
 		}
 		return activity;
 	}
 	
+	 public Activity findActiveById(int activeId)
+	{
+		Activity activity=null;
+		RowMapper<Activity> rowMapper=ParameterizedBeanPropertyRowMapper.newInstance(Activity.class);
+		String sql="SELECT * from activity where id=?";
+		List<Activity> list= this.jdbcTemplate.query(sql, new Object[] {activeId}, rowMapper);
+		if(list.size()>0)
+		{
+			activity=list.get(0);
+		}
+		return activity;
+	}
 	
 
 }
