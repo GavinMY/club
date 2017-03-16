@@ -19,8 +19,6 @@ public interface IUserService {
 	 */
 	public User userLogin(String userName,String password);
 	//注册审批
-
-	public Boolean approve(int status,int userId,int approveUserid);
 	public Boolean checkUserName(String userName);
 	public Object signin(int userId,int activityId,String signAddress); 
 
