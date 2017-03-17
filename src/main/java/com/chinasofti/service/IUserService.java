@@ -25,4 +25,5 @@ public interface IUserService {
 	public Boolean approve(Integer status,Integer userId,Integer approveUserid);
    //检查用户名是否已经存在
 	public Boolean  joinActive(int userId,int activeId);	
+	public Boolean cancelActive(int jid);
 }

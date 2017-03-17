@@ -26,9 +26,9 @@ public class Activity  implements Serializable {
 
     // Fields    
 
-     private String id;
+     private int id;
      private String content;
-     private Timestamp startTime;
+     private Timestamp startime;
      private Timestamp endTime;
      private String remark;
      private String createUserid;
@@ -39,21 +39,12 @@ public class Activity  implements Serializable {
     @Id @GeneratedValue    
     @Column(name="id", unique=true, nullable=false, length=32)
 
-    public String getId() {
+    public int getId() {
         return this.id;
     }
     
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
-    }
-    @NotNull(message ="startTime is empty")  
-    @Column(name="startime", length=19)
-    public Timestamp getStartTime() {
-        return this.startTime;
-    }
-    
-    public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
     }
     @NotNull(message = "endTime is empty")
     @Column(name="endtime", length=19)
@@ -119,12 +110,22 @@ public class Activity  implements Serializable {
 		this.address = address;
 	}
       
-	public Activity(String id, String content, Timestamp startTime, Timestamp endTime, String remark,
+    @NotNull(message ="startTime is empty")  
+    @Column(name="startime", length=19)
+	public Timestamp getStartime() {
+		return startime;
+	}
+
+	public void setStartime(Timestamp startime) {
+		this.startime = startime;
+	}
+
+	public Activity(int id, String content, Timestamp startime, Timestamp endTime, String remark,
 			String createUserid, Timestamp createTime, Integer status) {
 		super();
 		this.id = id;
 		this.content = content;
-		this.startTime = startTime;
+		this.startime = startime;
 		this.endTime = endTime;
 		this.remark = remark;
 		this.createUserid = createUserid;

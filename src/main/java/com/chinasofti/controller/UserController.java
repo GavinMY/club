@@ -5,10 +5,13 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +21,8 @@ import com.chinasofti.model.Result;
 import com.chinasofti.model.User;
 import com.chinasofti.service.IUserService;
 import com.chinasofti.service.Impl.ActiveServiceImpl;
+
+import net.sf.json.JSONArray;
 
 @Controller
 @RequestMapping("user")
@@ -52,11 +57,19 @@ public class UserController {
 
 	@ResponseBody
 	@RequestMapping("regist")
-	public Object regist(@ModelAttribute("user") User user) throws Exception {
+	public Object regist(@Valid @ModelAttribute("user") User user,BindingResult bindingResult) throws Exception {
 		Result result = null;
 
-		if (null == user && null == user.getUserName()) {
-			result = new Result(-1, velocityConf.getProperty("user.emptyname"), null);
+		if(bindingResult.hasErrors())
+		{
+			Map<String, Object> data = new HashMap<String, Object>();			
+			JSONArray errorArray=new JSONArray();
+			for(ObjectError error:bindingResult.getAllErrors())
+			{				
+				errorArray.add(error.getDefaultMessage());				
+			}
+			data.put("errors", errorArray);
+			result = new Result(-1, velocityConf.getProperty("golbal.error"), data);
 		} else {
 			Boolean flg = UserServiceImp.checkUserName(user.getUserName());
 			if (flg) {
@@ -98,9 +111,10 @@ public class UserController {
 		}
 		return result;
 	}
+
 	@ResponseBody
 	@RequestMapping("signin")
-	public Object signin(int userId,int activityId,String signAddress) {
+	public Object signin(int userId, int activityId, String signAddress) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		Result result = null;
 		Boolean flg = (Boolean) UserServiceImp.signin(userId, activityId, signAddress);
@@ -108,7 +122,7 @@ public class UserController {
 
 			result = new Result(1, "sign in successful", null);
 		} else {
-			result = new Result(-1,"sign in failed", null);
+			result = new Result(-1, "sign in failed", null);
 		}
 		return result;
 	}
@@ -121,9 +135,37 @@ public class UserController {
 		if (null == active) {
 			result = new Result(-1, "active not exist", null);
 		} else {
-			Boolean flg = UserServiceImp.joinActive(userId, activeId);
+			boolean hasjoin = activeServiceImpl.ifHasJoinActive(activeId, userId);// if
+																					// has
+																					// been
+																					// join
+																					// the
+																					// active
+			if (!hasjoin) {
+				Boolean flg = UserServiceImp.joinActive(userId, activeId);
+				if (flg) {
+					result = new Result(1, "join active success", null);
+				} else {
+					result = new Result(-1, velocityConf.getProperty("golbal.error"), null);
+				}
+			} else {
+				result = new Result(-1, "you has been join this active", null);
+			}
+		}
+		return result;
+	}
+
+	@ResponseBody
+	@RequestMapping("canceActive")
+	public Object canceActive(int jid) {
+		Result result = null;
+		boolean isjoin = activeServiceImpl.ifHasJoinActive(jid);
+		if (!isjoin) {
+			result = new Result(-1, "you has not join this active", null);
+		} else {
+			Boolean flg = UserServiceImp.cancelActive(jid);
 			if (flg) {
-				result = new Result(1, "join active success", null);
+				result = new Result(1, "success", null);
 			} else {
 				result = new Result(-1, velocityConf.getProperty("golbal.error"), null);
 			}

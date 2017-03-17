@@ -125,4 +125,14 @@ public class UserServiceImp implements IUserService {
 		}
 		return result;
 	}
+	public Boolean cancelActive(int jid)
+	{
+		Boolean result = false;
+		String sql="delete from joinuser where id=?";
+		int flg = this.jdbcTemplate.update(sql, jid);
+		if (flg > 0) {
+			result = true;
+		}
+		return result;
+	}
 }

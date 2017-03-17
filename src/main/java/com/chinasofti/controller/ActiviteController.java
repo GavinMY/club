@@ -1,6 +1,7 @@
 package com.chinasofti.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -67,12 +68,29 @@ public class ActiviteController {
 		if(null!=activity)
 		{
 			data.put("activity", activity);
+			List list=activeServiceImpl.getJoinActiveUser(activity.getId());
+			data.put("joinuser", list);
 			result = new Result(1, velocityConf.getProperty("golbal.success"), data);
 		}
 		else
 		{
 			result = new Result(-1,"activity not find", null);
 		}
+		return result;
+	}
+	@ResponseBody
+	@RequestMapping("getJoinActiveUser")
+	public Object getJoinActiveUser(int activeId)
+	{
+		Result result=null;
+//		if(0==activeId)
+//		{
+//			result = new Result(-1, "activeId is null", null);
+//		}
+		Map<String, Object> data = new HashMap<String, Object>();
+		List list=activeServiceImpl.getJoinActiveUser(activeId);
+		data.put("joinuser", list);
+		 result = new Result(1, velocityConf.getProperty("golbal.success"), data);
 		return result;
 	}
 	

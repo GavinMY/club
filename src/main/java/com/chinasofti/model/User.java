@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -58,7 +59,7 @@ public class User  implements java.io.Serializable {
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
-    
+    @NotNull(message ="userName is empty")  
     @Column(name="user_name", length=10)
 
     public String getUserName() {
@@ -68,7 +69,7 @@ public class User  implements java.io.Serializable {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-    
+    @NotNull(message ="password is empty") 
     @Column(name="password", length=100)
 
     public String getPassword() {

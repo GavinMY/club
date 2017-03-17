@@ -21,7 +21,7 @@ public class ActiveServiceImpl implements ActiveService {
 	public Boolean createActive(Activity active) {
 		Boolean flg=false;
 	String sql="INSERT into activity(content,startime,endtime,remark,createuserid,address) values(?,?,?,?,?,?)";
-	   int result=this.jdbcTemplate.update(sql, new Object[]{active.getContent(),active.getStartTime(),active.getEndTime(),active.getRemark(),active.getCreateUserid(),active.getAddress()});
+	   int result=this.jdbcTemplate.update(sql, new Object[]{active.getContent(),active.getStartime(),active.getEndTime(),active.getRemark(),active.getCreateUserid(),active.getAddress()});
 	   if(result>0)
 	   {
 		   flg=true;
@@ -53,6 +53,37 @@ public class ActiveServiceImpl implements ActiveService {
 			activity=list.get(0);
 		}
 		return activity;
+	}
+
+	@Override
+	public List getJoinActiveUser(int activeId) {
+		String sql="SELECT u.user_id,u.user_name,u.user_type,u.chineseName,u.department,u.employid,j.jointime,j.id from joinuser j,user u WHERE u.user_id=j.userid and j.activeid=? ORDER BY jointime DESC";
+		List list=this.jdbcTemplate.queryForList(sql, new Object[] {activeId} );
+		return list;
+	}
+
+	@Override
+	public Boolean ifHasJoinActive(int activeId, int userId) {
+		Boolean flg=false;
+		String sql="SELECT * from joinuser where activeid=? and userid=?";
+		List list=this.jdbcTemplate.queryForList(sql,  new Object[] {activeId,userId});
+		if(null!=list&&list.size()>0)
+		{
+			flg=true;
+		}
+		return flg;
+	}
+
+	@Override
+	public Boolean ifHasJoinActive(int jid) {
+		Boolean flg=false;
+		String sql="SELECT * from joinuser where id=?";
+		List list=this.jdbcTemplate.queryForList(sql,  new Object[] {jid});
+		if(null!=list&&list.size()>0)
+		{
+			flg=true;
+		}
+		return flg;
 	}
 	
 
