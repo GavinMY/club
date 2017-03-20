@@ -1,6 +1,7 @@
 package com.chinasofti.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -57,16 +58,14 @@ public class UserController {
 
 	@ResponseBody
 	@RequestMapping("regist")
-	public Object regist(@Valid @ModelAttribute("user") User user,BindingResult bindingResult) throws Exception {
+	public Object regist(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) throws Exception {
 		Result result = null;
 
-		if(bindingResult.hasErrors())
-		{
-			Map<String, Object> data = new HashMap<String, Object>();			
-			JSONArray errorArray=new JSONArray();
-			for(ObjectError error:bindingResult.getAllErrors())
-			{				
-				errorArray.add(error.getDefaultMessage());				
+		if (bindingResult.hasErrors()) {
+			Map<String, Object> data = new HashMap<String, Object>();
+			JSONArray errorArray = new JSONArray();
+			for (ObjectError error : bindingResult.getAllErrors()) {
+				errorArray.add(error.getDefaultMessage());
 			}
 			data.put("errors", errorArray);
 			result = new Result(-1, velocityConf.getProperty("golbal.error"), data);
@@ -86,15 +85,20 @@ public class UserController {
 	/* 审批用户 */
 	@ResponseBody
 	@RequestMapping("approve")
-	public Object approve(int userId, int approveUserid) {
+	public Object approve(String userId, int approveUserid) {
 		Result result = null;
-		Boolean flg = UserServiceImp.approve(new Integer(1), new Integer(userId), new Integer(approveUserid));
-		if (flg) {
-			result = new Result(1, velocityConf.getProperty("golbal.success"), null);
+		logger.debug("userId:"+userId);
+		if (null == userId ||""==userId) {
+			result = new Result(-1, "the userId is null", null);
 		} else {
-			result = new Result(-1, "update error", null);
+			
+			Boolean flg = UserServiceImp.approve(1, userId, approveUserid);
+			if (flg) {
+				result = new Result(1, velocityConf.getProperty("golbal.success"), null);
+			} else {
+				result = new Result(-1, "update error", null);
+			}
 		}
-
 		return result;
 	}
 
@@ -170,6 +174,17 @@ public class UserController {
 				result = new Result(-1, velocityConf.getProperty("golbal.error"), null);
 			}
 		}
+		return result;
+	}
+
+	@ResponseBody
+	@RequestMapping("getApproveList")
+	public Object getApproveList() {
+		Result result = null;
+		List list = UserServiceImp.getApproveUser();
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("approveUserList", list);
+		result = new Result(1, "success", data);
 		return result;
 	}
 }

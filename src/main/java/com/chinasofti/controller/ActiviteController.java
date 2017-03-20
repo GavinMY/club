@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chinasofti.model.Activity;
@@ -29,7 +30,7 @@ public class ActiviteController {
 	@Autowired
     public Properties velocityConf;
 	@ResponseBody
-	@RequestMapping("create")
+	@RequestMapping(value="create",method=RequestMethod.POST)
 	public Object createActive(@Valid @ModelAttribute("activity") Activity activity,BindingResult bindingResult)
 	{
 		Result result = null;

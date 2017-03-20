@@ -7,6 +7,6 @@
 <title>index</title>
 </head>
 <body>
-<div>This is index jsp</div>
+<div id="test" style="width: 20px;background-color: red">click me</div>
 </body>
 </html>

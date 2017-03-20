@@ -83,11 +83,11 @@ public class UserServiceImp implements IUserService {
 	}
 
 	@Override
-	public Boolean approve(Integer status, Integer userId,Integer approveUserid) {
+	public Boolean approve(int state, String userId, int approveUserid) {
 		Boolean result = false;
 		Timestamp timestamp=new Timestamp(System.currentTimeMillis());
-		int flg = jdbcTemplate.update("update user set state=?, approveuserid=? , approvetime=?  where user_id=?",
-				  new Object[]{status,approveUserid,timestamp,userId});
+		int flg = jdbcTemplate.update("update user set state=?, approveuserid=? , approvetime=?  where user_id in ("+userId+")",
+				  new Object[]{state,approveUserid,timestamp});
 		if (flg > 0) {
 			result = true;
 		}
@@ -135,4 +135,12 @@ public class UserServiceImp implements IUserService {
 		}
 		return result;
 	}
+
+	@Override
+	public List getApproveUser() {
+		String sql="select u.user_id,u.user_name,u.employid,u.department,u.chineseName,u.create_time from user u where state=0";
+		List list=this.jdbcTemplate.queryForList(sql);
+		return list;
+	}
+	
 }

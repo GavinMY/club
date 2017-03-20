@@ -3,6 +3,8 @@
  */
 package com.chinasofti.service;
 
+import java.util.List;
+
 import com.chinasofti.model.User;
 
 /**
@@ -22,8 +24,9 @@ public interface IUserService {
 	public Boolean checkUserName(String userName);
 	public Object signin(int userId,int activityId,String signAddress); 
 
-	public Boolean approve(Integer status,Integer userId,Integer approveUserid);
+	public Boolean approve(int state, String userId, int approveUserid);
    //检查用户名是否已经存在
 	public Boolean  joinActive(int userId,int activeId);	
 	public Boolean cancelActive(int jid);
+	public List getApproveUser();
 }
