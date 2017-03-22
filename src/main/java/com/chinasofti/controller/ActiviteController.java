@@ -1,6 +1,5 @@
 package com.chinasofti.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,26 +91,7 @@ public class ActiviteController {
 		return result;
 	}
 	
-	@ResponseBody
-	@RequestMapping("getSignAndJoinActivelist")
-	public Object getSignAndJoinActivelist()
-	{
-		Result result=null;
-		Map<String, Object> data = new HashMap<String, Object>();
-		List<Map<String, Object>> notSignUser=activeServiceImpl.getJoinActiveAndNotsign();
-		List<Map<String, Object>> notapprove=activeServiceImpl.pendingaprovesign();
-		List<Map<String, Object>> returnUser=new ArrayList<Map<String, Object>>();
-		notSignUser.addAll(notapprove);
-		for(Map map:notSignUser)
-		{	
-		int count=activeServiceImpl.getJoinActiveAndNotsignCount(map.get("user_id").toString());
-		map.put("count", count);
-		returnUser.add(map);
-		}
-		data.put("userInfo", notSignUser);
-		 result = new Result(1, velocityConf.getProperty("golbal.success"), data);
-		return result;
-	}
+
 	
 }
  
