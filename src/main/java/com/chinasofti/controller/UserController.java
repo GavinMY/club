@@ -139,12 +139,7 @@ public class UserController {
 		if (null == active) {
 			result = new Result(-1, "active not exist", null);
 		} else {
-			boolean hasjoin = activeServiceImpl.ifHasJoinActive(activeId, userId);// if
-																					// has
-																					// been
-																					// join
-																					// the
-																					// active
+			boolean hasjoin = activeServiceImpl.ifHasJoinActive(activeId, userId);
 			if (!hasjoin) {
 				Boolean flg = UserServiceImp.joinActive(userId, activeId);
 				if (flg) {
@@ -159,6 +154,7 @@ public class UserController {
 		return result;
 	}
 
+	
 	@ResponseBody
 	@RequestMapping("canceActive")
 	public Object canceActive(int jid) {
