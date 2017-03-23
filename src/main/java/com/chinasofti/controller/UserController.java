@@ -1,5 +1,6 @@
 package com.chinasofti.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,8 @@ import java.util.Properties;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+
+import net.sf.json.JSONArray;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +26,9 @@ import com.chinasofti.model.User;
 import com.chinasofti.service.IUserService;
 import com.chinasofti.service.Impl.ActiveServiceImpl;
 
-import net.sf.json.JSONArray;
+
+
+
 
 @Controller
 @RequestMapping("user")
@@ -116,20 +121,6 @@ public class UserController {
 		return result;
 	}
 
-	@ResponseBody
-	@RequestMapping("signin")
-	public Object signin(int userId, int activityId, String signAddress) {
-		Map<String, Object> data = new HashMap<String, Object>();
-		Result result = null;
-		Boolean flg = (Boolean) UserServiceImp.signin(userId, activityId, signAddress);
-		if (flg) {
-
-			result = new Result(1, "sign in successful", null);
-		} else {
-			result = new Result(-1, "sign in failed", null);
-		}
-		return result;
-	}
 
 	@ResponseBody
 	@RequestMapping("joinActive")
@@ -183,4 +174,66 @@ public class UserController {
 		result = new Result(1, "success", data);
 		return result;
 	}
+	@ResponseBody
+	@RequestMapping("signin")
+	public Object signin(int userId,int activityId) {
+		Map<String, Object> data = new HashMap<String, Object>();
+		Result result = null;
+		Boolean flg = (Boolean) UserServiceImp.signin(userId, activityId);
+		if (flg) {
+
+			result = new Result(1, "sign in successful", null);
+		} else {
+			result = new Result(-1,"sign in failed", null);
+		}
+		return result;
+	}
+	@ResponseBody
+	@RequestMapping("signlist")
+	public Object signlist(String userId,int activeId) throws Exception {
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("signList", UserServiceImp.signlist(userId,activeId));
+		Result result =new Result(1, "success", data);
+		return result;
+	}
+	@ResponseBody
+	@RequestMapping("signAudit")
+	public Object signAudit(int userId, String idArray) throws Exception {
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("signList", UserServiceImp.signAudit(userId, idArray));
+		Result result =new Result(1, "success", data);
+		return result;
+	}
+	@ResponseBody
+	@RequestMapping("getSignAndJoinActivelist")
+	public Object getSignAndJoinActivelist()
+	{
+		Result result=null;
+		Map<String, Object> data = new HashMap<String, Object>();
+		List<Map<String, Object>> notSignUser=UserServiceImp.getJoinActiveAndNotsign();
+		List<Map<String, Object>> notapprove=UserServiceImp.pendingaprovesign();
+		List<Map<String, Object>> returnUser=new ArrayList<Map<String, Object>>();
+		notSignUser.addAll(notapprove);
+		for(Map map:notSignUser)
+		{	
+		int count=UserServiceImp.getJoinActiveAndNotsignCount(map.get("user_id").toString());
+		if(count>0){
+		map.put("count", count);
+		returnUser.add(map);
+		}
+		}
+		data.put("userInfo", returnUser);
+		 result = new Result(1, velocityConf.getProperty("golbal.success"), data);
+		return result;
+	}
+//	@ResponseBody
+//	@RequestMapping("signUnpass")
+//	public Object CountUnsign(int userId,int activeid) throws Exception {
+//		Map<String, Object> data = new HashMap<String, Object>();
+//		data.put("CountUnsign", UserServiceImp.CountUnsign(userId,activeid));
+//		data.put("")
+//		Result result =new Result(1, "success", data);
+//		return result;
+//	}
+//	}
 }
