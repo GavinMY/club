@@ -17,7 +17,8 @@ public class TimerTask {
 
 	@Autowired
 	ActiveServiceImpl activeServiceImpl;
-	@Scheduled(cron="0/10 * *  * * ? ")   //每5秒执行一次    
+	@Scheduled(cron = "0 0 1 * * ?") //每日一点
+	//@Scheduled(cron="0/10 * *  * * ? ")   //每5秒执行一次    
 	public void updateEinvoce() {
 		logger.debug("Timer Task is begin work");
 		List<Map<String, Object>> list=activeServiceImpl.getInvalidActive();
