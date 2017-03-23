@@ -3,6 +3,7 @@ package com.chinasofti.service.Impl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +91,27 @@ public class ActiveServiceImpl implements ActiveService {
 		}
 		return flg;
 	}
-	
+	 public List<Map<String, Object>> getInvalidActive()
+	 {
+		 String sql="SELECT * FROM activity a where a.endtime>CURDATE() and a.status=0";
+		 
+		 List<Map<String, Object>> list=this.jdbcTemplate.queryForList(sql);
+		 System.out.println("list:"+list.size());
+		 return list;
+	 }
+	 
+	 public boolean updateActiveSattus(int status,String activeId)
+	 {
+		 String sql="update activity a set a.status=? where a.id=? ";
+		int result= this.jdbcTemplate.update(sql, new Object[] {status,activeId});
+		if(result>0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	 }
 
 }
