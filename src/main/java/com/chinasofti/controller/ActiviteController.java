@@ -7,6 +7,8 @@ import java.util.Properties;
 
 import javax.validation.Valid;
 
+import net.sf.json.JSONArray;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -19,8 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.chinasofti.model.Activity;
 import com.chinasofti.model.Result;
 import com.chinasofti.service.Impl.ActiveServiceImpl;
-
-import net.sf.json.JSONArray;
 
 @Controller
 @RequestMapping("active")

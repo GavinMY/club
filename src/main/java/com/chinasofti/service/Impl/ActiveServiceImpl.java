@@ -1,5 +1,7 @@
 package com.chinasofti.service.Impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +20,6 @@ public class ActiveServiceImpl implements ActiveService {
 	private static Logger logger = Logger.getLogger(ActiveServiceImpl.class);
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	@Override
 	public Boolean createActive(Activity active) {
 		Boolean flg=false;
 	String sql="INSERT into activity(content,startime,endtime,remark,createuserid,address) values(?,?,?,?,?,?)";
@@ -29,8 +30,15 @@ public class ActiveServiceImpl implements ActiveService {
 	   }
 		return flg;
 	}
+	 public static String stampToDate(String s){
+	        String res;
+	        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	        long lt = new Long(s);
+	        Date date = new Date(lt);
+	        res = simpleDateFormat.format(date);
+	        return res;
+	    }
 
-	@Override
 	public Activity getNewActive() {
 		Activity activity=null;
 		RowMapper<Activity> rowMapper=ParameterizedBeanPropertyRowMapper.newInstance(Activity.class);
@@ -56,14 +64,12 @@ public class ActiveServiceImpl implements ActiveService {
 		return activity;
 	}
 
-	@Override
 	public List getJoinActiveUser(int activeId) {
 		String sql="SELECT u.user_id,u.user_name,u.user_type,u.chineseName,u.department,u.employid,j.jointime,j.id from joinuser j,user u WHERE u.user_id=j.userid and j.activeid=? ORDER BY jointime DESC";
 		List list=this.jdbcTemplate.queryForList(sql, new Object[] {activeId} );
 		return list;
 	}
 
-	@Override
 	public Boolean ifHasJoinActive(int activeId, int userId) {
 		Boolean flg=false;
 		String sql="SELECT * from joinuser where activeid=? and userid=?";
@@ -75,7 +81,6 @@ public class ActiveServiceImpl implements ActiveService {
 		return flg;
 	}
 
-	@Override
 	public Boolean ifHasJoinActive(int jid) {
 		Boolean flg=false;
 		String sql="SELECT * from joinuser where id=?";
