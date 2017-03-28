@@ -93,7 +93,7 @@ public class ActiveServiceImpl implements ActiveService {
 	}
 	 public List<Map<String, Object>> getInvalidActive()
 	 {
-		 String sql="SELECT * FROM activity a where a.endtime>CURDATE() and a.status=0";
+		 String sql="SELECT * FROM activity a where a.endtime<NOW() and status=0";
 		 
 		 List<Map<String, Object>> list=this.jdbcTemplate.queryForList(sql);
 		 System.out.println("list:"+list.size());
