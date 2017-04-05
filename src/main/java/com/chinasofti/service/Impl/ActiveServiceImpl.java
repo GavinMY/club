@@ -65,7 +65,7 @@ public class ActiveServiceImpl implements ActiveService {
 	}
 
 	public List getJoinActiveUser(int activeId) {
-		String sql="SELECT u.user_id,u.user_name,u.user_type,u.chineseName,u.department,u.employid,j.jointime,j.id from joinuser j,user u WHERE u.user_id=j.userid and j.activeid=? ORDER BY jointime DESC";
+		String sql="SELECT u.user_id,u.user_name,u.user_type,u.chineseName,u.department,u.employid,j.jointime,j.id from joinuser j,user u,activity a WHERE u.user_id=j.userid and a.id=j.activeid and j.activeid=? and a.status=0  ORDER BY jointime DESC";
 		List list=this.jdbcTemplate.queryForList(sql, new Object[] {activeId} );
 		return list;
 	}
